@@ -1,21 +1,23 @@
 {
-  "name": "on-save",
-  "version": "2.2.1",
-  "description": "Run a shell command when you save a file",
+  "name": "on-save-emcc",
+  "version": "0.5.0",
+  "description": "Mark exported functions for emcc; make list available in an automatically run shell script",
   "keywords": [
     "save",
+    "emscripten",
+    "emcc",
+    "em++",
+    "wasm",
+    "exported",
+    "functions",
     "file",
     "run",
     "command",
     "watch",
     "watcher",
-    "trigger",
-    "hook",
-    "track",
-    "execute",
     "shell"
   ],
-  "repository": "https://github.com/mvila/on-save",
+  "repository": "https://github.com/rdroe/on-save-emcc",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
