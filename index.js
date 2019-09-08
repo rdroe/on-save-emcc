@@ -94,11 +94,12 @@ export default {
       return;
     }
 
-    const srcFile = savedFile;
-
     let destFile = relative(config.srcDir, savedFile);
     destFile = join(config.destDir, destFile);
 
+    const exportNames = this.getExportedFunctions([savedFile], rootDir).map(f => `"_${f}"`);
+    const exportedFunctions = exportNames.join(',');
+    const srcFile = savedFile;
     const extension = extname(destFile);
     const destFileWithoutExtension = destFile.substr(0, destFile.length - extension.length);
 
@@ -107,7 +108,8 @@ export default {
     const command = this.resolveVariables(config.command, {
       srcFile,
       destFile,
-      destFileWithoutExtension
+      destFileWithoutExtension,
+      exportedFunctions,
     });
 
     const options = {cwd: rootDir, timeout: EXEC_TIMEOUT};
