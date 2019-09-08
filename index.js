@@ -127,5 +127,14 @@ export default {
       command = command.replace(regExp, value);
     }
     return command;
+  },
+
+  getExportedFunctions(sources, rootDir) {
+    return sources.reduce((accum, fname) => {
+      const fNameResolved= join(rootDir, fname);
+      const content = readFileSync(fNameResolved, 'utf8');
+      const mtch = content.match(/\w*(?=\s\/\*f\*\/)/g);
+      return accum.concat(mtch.filter(m => !!m))
+    }, []);
   }
 };
