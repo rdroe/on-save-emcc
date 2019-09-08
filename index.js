@@ -6,7 +6,7 @@ import {exec} from 'child_process';
 import {CompositeDisposable} from 'atom';
 import minimatch from 'minimatch';
 import mkdirp from 'mkdirp';
-const PROPS_WHITELIST = [];
+const PROPS_WHITELIST = ['files', 'command', 'srcDir', 'destDir', 'showOutput', 'showError', 'exportedFunctions'];
 
 const CONFIGS_FILENAME = '.on-save.json';
 const EXEC_TIMEOUT = 60 * 1000; // 1 minute
@@ -61,6 +61,7 @@ export default {
 
   normalizeConfig(rawConfig) {
     const config = this.filterToWhitelist(rawConfig);
+    console.log('filtered for whitelist:', config);
     if (!config.files) {
       throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
     }
@@ -113,6 +114,7 @@ export default {
     mkdirp.sync(join(rootDir, dirname(destFile)));
 
     const command = this.resolveVariables(config.command, {
+      ...config,
       srcFile,
       destFile,
       destFileWithoutExtension,
