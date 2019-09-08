@@ -1,6 +1,6 @@
 For users of emcc, who compile C or C++ to Wasm, this package enables automated creation of an EXPORTED_FUNCTIONS list. You manually mark the desired exports with `/*f*/`. They become available in the automatically run script.
 
-'-s EXPORTED_FUNCTIONS=...' is required in many cases where you want to call C++ from JS.  
+`'-s EXPORTED_FUNCTIONS=...'` is required in many cases where you want to call C++ from JS.  
 
 Originally forked from https://github.com/mvila/on-save.
 Thanks, for making it easily hackable, mvila.
