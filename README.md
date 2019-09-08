@@ -19,7 +19,7 @@ As regular users of Emscripten to generate wasm know, any C++ function that you 
 
 With emcc, you can use the `-s EXPORT_ALL=1` flag, but you may want more precision.
 
-For example, if you want to export the `main` function from C++ (which is in fact required if you want that function to run), you would place the marker after its name in its definition, e.g.
+For example, if you want to export the `main` function from C++ (which is in fact required if you want that function to run), in your source code you would place the marker after its name in its definition, e.g.
 
 ```
 int main /*f*/ () {
