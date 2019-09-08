@@ -6,6 +6,7 @@ import {exec} from 'child_process';
 import {CompositeDisposable} from 'atom';
 import minimatch from 'minimatch';
 import mkdirp from 'mkdirp';
+const PROPS_WHITELIST = [];
 
 const CONFIGS_FILENAME = '.on-save.json';
 const EXEC_TIMEOUT = 60 * 1000; // 1 minute
@@ -58,8 +59,8 @@ export default {
     return configs;
   },
 
-  normalizeConfig(config) {
-
+  normalizeConfig(rawConfig) {
+    const config = this.filterToWhitelist(rawConfig);
     if (!config.files) {
       throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
     }
@@ -81,8 +82,13 @@ export default {
     if (config.showError === undefined) {
       config.showError = true;
     }
-
     return {...config, files: config.files};
+  },
+
+  filterToWhitelist(normalizedConfig) {
+    return Object.keys(normalizedConfig).reduce((accum, propName) => {
+      return PROPS_WHITELIST.includes(propName) ? ({...accum, [propName]: normalizedConfig[propName]}) : accum;
+    }, {});
   },
 
   run({rootDir, savedFile, config}) {
@@ -110,11 +116,11 @@ export default {
       srcFile,
       destFile,
       destFileWithoutExtension,
-      exportedFunctions,
+      exportedFunctions
     });
 
     const options = {cwd: rootDir, timeout: EXEC_TIMEOUT};
-    const message = {detail: { command, options}, dismissable: true};
+    const message = {detail: {command, options}, dismissable: true};
 
     atom.notifications.addSuccess(`CLI Command: ${JSON.stringify(message)}`);
 
@@ -144,10 +150,10 @@ export default {
 
   getExportedFunctions(sources, rootDir) {
     return sources.reduce((accum, fname) => {
-      const fNameResolved= join(rootDir, fname);
+      const fNameResolved = join(rootDir, fname);
       const content = readFileSync(fNameResolved, 'utf8');
       const mtch = content.match(/\w*(?=\s\/\*f\*\/)/g);
-      return accum.concat(mtch.filter(m => !!m))
+      return accum.concat(mtch.filter(m => Boolean(m)));
     }, []);
   }
 
