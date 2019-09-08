@@ -90,6 +90,7 @@ export default {
       glob = join(config.srcDir, glob);
       return minimatch(savedFile, glob);
     });
+
     if (!matched) {
       return;
     }
@@ -113,6 +114,9 @@ export default {
     });
 
     const options = {cwd: rootDir, timeout: EXEC_TIMEOUT};
+    const message = {detail: { command, options}, dismissable: true};
+
+    atom.notifications.addSuccess(`CLI Command: ${JSON.stringify(message)}`);
 
     exec(command, options, (err, stdout, stderr) => {
       const message = 'on-save';
@@ -146,4 +150,5 @@ export default {
       return accum.concat(mtch.filter(m => !!m))
     }, []);
   }
+
 };
