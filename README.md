@@ -55,7 +55,7 @@ The content of the `.on-save.json` file must be an array of objects with the fol
   * `${srcFile}`: The input file.
   * `${destFile}`: The output file.
   * `${destFileWithoutExtension}`: The output file without the extension.
-  * `${exportedFunctions}`: Emcc's "-s EXPORTED_FUNCTIONS" value; see example.
+  * `${exportedFunctions}`: Emcc's "-s EXPORTED_FUNCTIONS" value; see the example documented above.
 * `showOutput` _(default to `false`)_: A boolean indicating whether the output stream (stdout) should be displayed or not.
 * `showError` _(default to `true`)_: A boolean indicating whether the error stream (stderr) should be displayed or not.
 
