@@ -58,24 +58,31 @@ export default {
     return configs;
   },
 
-  normalizeConfig({
-    srcDir = '',
-    destDir = srcDir,
-    files,
-    command,
-    showOutput = false,
-    showError = true
-  }) {
-    if (!files) {
+  normalizeConfig(config) {
+
+    if (!config.files) {
       throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
     }
-    if (!Array.isArray(files)) {
-      files = [files];
+    if (!Array.isArray(config.files)) {
+      config.files = [config.files];
     }
-    if (!command) {
+    if (!config.command) {
       throw new Error('on-save: \'command\' property is missing in \'.on-save.json\' configuration file');
     }
-    return {srcDir, destDir, files, command, showOutput, showError};
+    if (!config.srcDir) {
+      config.srcDir = '';
+    }
+    if (!config.destDir) {
+      config.destDir = config.srcDir;
+    }
+    if (config.showOutput === undefined) {
+      config.showOutput = false;
+    }
+    if (config.showError === undefined) {
+      config.showError = true;
+    }
+
+    return {...config, files: config.files};
   },
 
   run({rootDir, savedFile, config}) {
